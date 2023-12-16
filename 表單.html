@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sorting Hat</title>
+    <style>
+        body {
+            font-family: "Harry P",'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: "Times New Roman";
+            background: url('https://i.pinimg.com/736x/92/39/41/923941d4da9866305808be6c32cb672d.jpg') repeat;
+            background-size: cover;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            height: 100vh;
+            color: #fff;
+        }
+
+        header {
+            color : rgb(0, 0, 0);
+            font-family: "Harry P";
+            background-color: rgba(229, 229, 229, 0.7);
+            padding: 60px;
+            text-align: center;
+            font-size: 60px;
+            margin-bottom: 20px;
+            width: 100%;
+        }
+
+        section {
+            color:black;
+            max-width: 800px;
+            width: 100%;
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            opacity: 0;
+            animation: fadeInUp 0.8s ease-in-out forwards;
+        }
+
+        button {
+            background-color: #4caf50;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: background-color 0.3s ease-in-out;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        footer {
+            background-color: rgba(51, 51, 51, 0.7);
+            color: #fff;
+            text-align: center;
+            padding: 10px;
+            width: 100%;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <img src="https://cdn.icon-icons.com/icons2/1352/PNG/512/if-06-harry-potter-colour-sorting-hat-2730319_88134.png", width="50px",height="50px">
+        Sorting Hat
+    </header>
+
+    <section id="questionsSection">
+        <!-- 問題將由 JavaScript 生成 -->
+    </section>
+
+    <button onclick="submitAnswers()">提交</button>
+
+    <footer>
+        &copy; Sorting Hat
+    </footer>
+
+    <script>
+        // 題庫
+            var questionsData = [
+        {
+            question: "在解決問題時，你更傾向於選擇什麼方式？",
+            options: [
+                { label: "邏輯思考", variables: ["a", "b"] },
+                { label: "直覺感知", variables: ["c", "d"] }
+            ]
+        },
+        {
+            question: "面對困難時，你的第一反應是什麼？",
+            options: [
+                { label: "迅速行動，越快解決越好", variables: ["a", "c"] },
+                { label: "深思熟慮", variables: ["b", "d"] }
+            ]
+        },
+        {
+            question: "你對冒險和探索的態度是什麼？",
+            options: [
+                { label: "樂於冒險", variables: ["a", "d"] },
+                { label: "喜歡安逸", variables: ["b", "c"] }
+            ]
+        },
+        {
+            question: "哪種類型的書籍最吸引你？",
+            options: [
+                { label: "科幻奇幻", variables: ["a", "c"] },
+                { label: "歷史小說", variables: ["b", "d"] },
+                { label: "自我成長", variables: ["a", "b", "c", "d"] }
+            ]
+        },
+        {
+            question: "你認為自己最突出的品德是什麼？",
+            options: [
+                { label: "智慧", variables: ["a"] },
+                { label: "勇氣", variables: ["b"] },
+                { label: "誠實", variables: ["c"] },
+                { label: "友善", variables: ["d"] }
+            ]
+        },
+        {
+            question: "你認為生活中最重要的價值是什麼？",
+            options: [
+                { label: "勇氣", variables: ["a"] },
+                { label: "智慧", variables: ["b"] },
+                { label: "誠實", variables: ["c"] },
+                { label: "友善", variables: ["d"] }
+            ]
+        },
+        {
+            question: "你覺得在人生中最重要的是什麼？",
+            options: [
+                { label: "成就", variables: ["a"] },
+                { label: "友誼", variables: ["b"] },
+                { label: "知識", variables: ["c"] },
+                { label: "快樂", variables: ["d"] }
+            ]
+        },
+        {
+            question: "你更喜歡在工作中做什麼？",
+            options: [
+                { label: "策劃", variables: ["a", "c"] },
+                { label: "執行", variables: ["b", "d"] }
+            ]
+        },
+        {
+            question: "你在學習新事物時的風格是什麼？",
+            options: [
+                { label: "自主學習", variables: ["a", "b"] },
+                { label: "合作/團體學習", variables: ["c", "d"] }
+            ]
+        },
+        {
+            question: "你認為人與人之間最重要的是什麼？",
+            options: [
+                { label: "信任", variables: ["a"] },
+                { label: "尊重", variables: ["b"] },
+                { label: "理解", variables: ["c"] },
+                { label: "友善", variables: ["d"] }
+            ]
+        },
+        {
+            question: "你更喜歡用哪種方式表達自己的想法？",
+            options: [
+                { label: "言語", variables: ["a"] },
+                { label: "藝術", variables: ["b"] },
+                { label: "行動", variables: ["c"] }
+            ]
+        },
+        {
+            question: "如果能成為一種動物，你會選擇什麼動物？",
+            options: [
+                { label: "獅子", variables: ["a"] },
+                { label: "鷹", variables: ["b"] },
+                { label: "狼", variables: ["c"] },
+                { label: "鹿", variables: ["d"] }
+            ]
+        },
+        {
+            question: "你的夢想目標是什麼？",
+            options: [
+                { label: "改變世界", variables: ["a"] },
+                { label: "成就個人目標", variables: ["b"] }
+            ]
+        },
+        {
+            question: "如果你在魔法學校的一天，你會選擇參加哪種課程？",
+            options: [
+                { label: "魔法藥草學", variables: ["a"] },
+                { label: "變形術", variables: ["b"] },
+                { label: "黑魔法防禦術", variables: ["c"] }
+            ]
+        },
+        {
+            question: "你覺得什麼是真正的勇氣？",
+            options: [
+                { label: "面對恐懼", variables: ["a", "d"] },
+                { label: "無私奉獻", variables: ["b", "c"] }
+            ]
+        },
+        {
+            question: "在壓力下，你的反應是什麼？",
+            options: [
+                { label: "冷靜應對，理性分析", variables: ["a", "b"] },
+                { label: "感性化反應，先哭再說", variables: ["c", "d"] }
+            ]
+        },
+        {
+            question: "在認識新朋友或陌生人時你會如何應對？",
+            options: [
+                { label: "眼神堅定並落落大方", variables: ["a", "b"] },
+                { label: "眼神飄移講話較小聲", variables: ["c", "d"] }
+            ]
+        },
+        {
+            question: "你更傾向於跟隨常規還是打破日常規矩？",
+            options: [
+                { label: "遵循常規", variables: ["a", "b"] },
+                { label: "打破常規", variables: ["c", "d"] }
+            ]
+        },
+        {
+            question: "在空閒時，你傾向進行哪個休閒活動？",
+            options: [
+                { label: "探索大自然", variables: ["a", "d"] },
+                { label: "藝術創作", variables: ["b"] },
+                { label: "運動鍛煉", variables: ["c"] }
+            ]
+        },
+        {
+            question: "對於自己的失敗，你心裡的真實反應是什麼？",
+            options: [
+                { label: "自責", variables: ["a", "b"] },
+                { label: "認為是學習經驗的一環", variables: ["c", "d"] }
+            ]
+        },
+        {
+            question: "你喜歡什麼樣的學習方式？",
+            options: [
+                { label: "視覺學習", variables: ["a", "b"] },
+                { label: "聽覺學習", variables: ["c"] },
+                { label: "實踐學習", variables: ["d"] }
+            ]
+        },
+        {
+            question: "在重要決定面前，你會聽從哪一種內在聲音？",
+            options: [
+                { label: "理智聲音", variables: ["a", "b"] },
+                { label: "直覺聲音", variables: ["c", "d"] }
+            ]
+        },
+        {
+            question: "你覺得什麼樣的環境最能激發你的創造力？",
+            options: [
+                { label: "寧靜", variables: ["a", "b"] },
+                { label: "熱鬧", variables: ["c", "d"] }
+            ]
+        },
+        {
+            question: "你對於未來的規劃是怎樣的？",
+            options: [
+                { label: "詳盡計劃", variables: ["a", "b"] },
+                { label: "隨遇而安", variables: ["c", "d"] }
+            ]
+        },
+        {
+            question: "在解決問題時，你更傾向於重視哪些方面？",
+            options: [
+                { label: "結果", variables: ["a", "c"] },
+                { label: "過程", variables: ["b", "d"] }
+            ]
+        },
+        {
+            question: "你如何看待挑戰？",
+            options: [
+                { label: "認為這是成長/蛻變機會", variables: ["a", "d"] },
+                { label: "認為這是阻礙", variables: ["b", "c"] }
+            ]
+        },
+        {
+            question: "在追求目標時，你會選擇哪種方式？",
+            options: [
+                { label: "堅持不懈", variables: ["a", "c"] },
+                { label: "靈活變通", variables: ["b", "d"] }
+            ]
+        },
+        {
+            question: "你認為最能代表你的一個詞是什麼？",
+            options: [
+                { label: "冒險者", variables: ["a", "d"] },
+                { label: "夢想家", variables: ["b"] },
+                { label: "堅韌者", variables: ["c"] },
+                { label: "智者", variables: ["d"] }
+            ]
+        },
+        {
+            question: "你更喜歡什麼樣的遊戲？",
+            options: [
+                { label: "策略遊戲", variables: ["a", "c"] },
+                { label: "競技遊戲", variables: ["b", "d"] }
+            ]
+        },
+        {
+            question: "你對於探索未知領域的態度是什麼？",
+            options: [
+                { label: "渴望學習新知", variables: ["a", "c"] },
+                { label: "猶豫/不確定風險", variables: ["b", "d"] }
+            ]
+        },
+        {
+            question: "你認為哪種品質最能代表你自己？",
+            options: [
+                { label: "勇敢", variables: ["a"] },
+                { label: "智慧", variables: ["b"] },
+                { label: "忠誠", variables: ["c"] },
+                { label: "慷慨", variables: ["d"] }
+            ]
+        }
+
+
+        ];
+
+        // 變數統計
+        var variableValues = { a: 0, b: 0, c: 0, d: 0 };
+
+        var currentQuestionIndex = 0;
+
+        // 生成問題
+        function generateQuestions() {
+            var questionsSection = document.getElementById("questionsSection");
+            questionsSection.innerHTML = ""; // 清空問題區域
+
+            for (var i = 0; i < questionsData.length; i++) {
+                var questionDiv = document.createElement("div");
+                questionDiv.innerHTML = `<h2>Q ${i + 1}: ${questionsData[i].question}</h2>`;
+
+                // 生成選項
+                for (var j = 0; j < questionsData[i].options.length; j++) {
+                    questionDiv.innerHTML += `
+                        <label>
+                            <input type="radio" name="question${i + 1}" value="${j}">
+                            ${questionsData[i].options[j].label}
+                        </label>
+                    `;
+                }
+
+                questionsSection.appendChild(questionDiv);
+
+                // 問題淡入
+                questionDiv.style.animationDelay = i * 0.5 + "s";
+            }
+        }
+
+        // 提交答案
+        function submitAnswers() {
+            // 獲取所有選中的選項的值
+            var selectedValues = [];
+            for (var i = 0; i < questionsData.length; i++) {
+                var selectedOption = document.querySelector(`input[name="question${i + 1}"]:checked`);
+                if (selectedOption) {
+                    selectedValues.push(parseInt(selectedOption.value));
+
+                    // 更新變數統計
+                    var variables = questionsData[i].options[selectedValues[i]].variables;
+                    for (var variable of variables) {
+                        variableValues[variable]++;
+                    }
+                }
+            }
+
+            // 在這裡可以將 variableValues 用於統計或其他用途
+            // 這裡只是一個示例，你可以根據實際需求進行處理
+            alert("答案已提交：" + JSON.stringify(variableValues));
+        }
+
+        // 初始化
+        generateQuestions();
+    </script>
+
+</body>
+</html>
